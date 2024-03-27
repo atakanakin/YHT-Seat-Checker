@@ -6,14 +6,8 @@ from selenium.webdriver.chrome.options import Options
 import time
 import json
 import requests
-
-def sendTelegramMessage(message):
-    user_id = 'your_user_id'
-    bot_token = 'your_bot_token'
-    # bot = Bot(token = botToken)
-    # bot.send_message(chat_id=chatId, text=message)
-    url = f"https://api.telegram.org/bot{bot_token}/sendMessage?chat_id={user_id}&text={message}"
-    requests.get(url).json()  # this sends the message
+import sys
+import signal
 
 # read from json
 with open('config.json', encoding='utf-8') as f:
@@ -22,8 +16,24 @@ with open('config.json', encoding='utf-8') as f:
     user_nereye = data['nereye']
     user_tarih = data['tarih']
     user_hour = data['saat']
+    botToken = data['botToken']
+    chatId = data['chatId']
     states = [-1 for _ in user_hour]
     timeout = int(data['timeout'])
+
+def signal_handler(sig, frame):
+    sendTelegramMessage("YHT Seat Check programı kapatılıyor...")
+    sys.exit(0)
+
+signal.signal(signal.SIGINT, signal_handler)
+
+def sendTelegramMessage(message):
+    # bot = Bot(token = botToken)
+    # bot.send_message(chat_id=chatId, text=message)
+    url = f"https://api.telegram.org/bot{botToken}/sendMessage?chat_id={chatId}&text={message}"
+    requests.get(url).json()  # this sends the message
+
+
 
 
 def initial_search():
@@ -35,8 +45,7 @@ def initial_search():
     options.add_argument('--log-level=3')
     options.add_argument('--disable-logging')
     options.add_argument('--no-sandbox')
-    options.add_argument('--headless=new')
-    options.headless = True
+    options.add_argument('--headless')
     options.add_argument('--disable-gpu')
 
     options.page_load_strategy = 'normal'
@@ -124,6 +133,6 @@ def check_yht(counter = 0):
 while True:
     try:
         check_yht()
+        time.sleep(timeout)
     except Exception as e:
-        pass
-    time.sleep(timeout)
+        print('An error occured. Trying again...')
