@@ -31,9 +31,12 @@ def initial_search():
     options = Options()
     # user agent
     # Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36
-    options.add_argument('user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36')
-    options.add_argument('--log-level=OFF')
-    options.add_argument('--headless')
+    options.add_argument('user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36')
+    options.add_argument('--log-level=3')
+    options.add_argument('--disable-logging')
+    options.add_argument('--no-sandbox')
+    options.add_argument('--headless=new')
+    options.headless = True
     options.add_argument('--disable-gpu')
 
     options.page_load_strategy = 'normal'
@@ -122,6 +125,5 @@ while True:
     try:
         check_yht()
     except Exception as e:
-        print('An error occured')
-        print(e)
+        pass
     time.sleep(timeout)

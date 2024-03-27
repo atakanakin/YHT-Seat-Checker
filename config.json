@@ -1,7 +1,7 @@
 {
     "nereden": "Ankara Gar",
-    "nereye": "Eskişehir",
-    "tarih": "04.03.2024",
-    "saat": ["11:10", "12:05"],
-    "timeout": 60
+    "nereye": "Konya (Selçuklu YHT)",
+    "tarih": "06.04.2024",
+    "saat": ["16:40", "12:20"],
+    "timeout": 30
 }
